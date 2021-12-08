@@ -4,8 +4,9 @@ mod color;
 mod commands;
 mod cropper;
 mod entities;
+mod finder;
 
-use crate::commands::crop;
+use crate::commands::{crop, make};
 use clap::{App, Arg, SubCommand};
 
 fn main() {
@@ -63,6 +64,17 @@ fn main() {
                 .value_of("DESTINATION_DIRECTORY")
                 .unwrap()
                 .to_string(),
+        );
+    } else if let Some(matches) = matches.subcommand_matches("make") {
+        make(
+            matches.value_of("PICTURE").unwrap().to_string(),
+            matches
+                .value_of("TILES_PER_SIDE")
+                .unwrap()
+                .to_string()
+                .parse::<u16>()
+                .unwrap(),
+            matches.value_of("TILES_DIRECTORY").unwrap().to_string(),
         );
     }
 }

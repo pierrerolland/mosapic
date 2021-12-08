@@ -29,19 +29,6 @@ pub fn get_dominant_color(img_vec: Vec<u8>) -> Lab {
     Lab::get_dominant_color(&res).unwrap()
 }
 
-pub fn remove_alpha(buffer: ImageBuffer<Rgba<u8>, Vec<u8>>) -> Vec<u8> {
-    let pixels = buffer.into_vec();
-    let mut out = vec![];
-
-    for i in 0..pixels.len() {
-        if i % 4 != 0 {
-            out.push(pixels[i])
-        }
-    }
-
-    out
-}
-
 pub fn compute_proximity(color1: Lab, color2: Lab) -> f32 {
     ((color2.l - color1.l) * (color2.l - color1.l)
         + ((color2.a - color1.a) * (color2.a - color1.a))
