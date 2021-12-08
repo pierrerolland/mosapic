@@ -5,6 +5,9 @@ mod commands;
 mod cropper;
 mod entities;
 mod finder;
+mod image;
+mod match_maker;
+mod parser;
 
 use crate::commands::{crop, make};
 use clap::{App, Arg, SubCommand};
