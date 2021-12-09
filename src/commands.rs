@@ -1,4 +1,5 @@
 use crate::cropper;
+use crate::entities::Proximity;
 use crate::finder::{find_files, find_tiles};
 use crate::image::draw;
 use crate::match_maker::make_match;
@@ -23,9 +24,15 @@ pub fn make(picture: String, tiles_per_side: u16, tiles_directory: String) {
         &picture.parent().unwrap().to_string_lossy().to_string(),
         false,
     );
-    let parts = parse(picture, tiles_per_side);
+    let parts_chunks = parse(picture, tiles_per_side);
     let tiles = find_tiles(tiles_directory);
-    let final_map = make_match(parts, tiles);
+    let mut final_map: Vec<Proximity> = vec![];
+
+    for (_pos, parts) in parts_chunks.into_iter().enumerate() {
+        let mut map = make_match(parts, &tiles);
+
+        final_map.append(&mut map);
+    }
 
     draw(final_map, tiles_per_side);
 }

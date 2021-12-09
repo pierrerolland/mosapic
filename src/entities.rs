@@ -23,6 +23,12 @@ pub struct ImagePart {
     pub dominant_color: Color,
 }
 
+impl ImagePart {
+    pub fn get_chunk(&self, chunks_per_side: u16) -> u16 {
+        (self.x) / 10 + chunks_per_side * (self.y / 10)
+    }
+}
+
 #[derive(Clone)]
 pub struct Proximity {
     pub part: ImagePart,

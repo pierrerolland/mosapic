@@ -1,12 +1,17 @@
 use crate::color::compute_proximity;
 use crate::entities::{ImagePart, Proximity, Tile};
+use indicatif::ProgressBar;
 use std::cmp::Ordering;
 
-pub fn make_match(parts: Vec<ImagePart>, tiles: Vec<Tile>) -> Vec<Proximity> {
+pub fn make_match(parts: Vec<ImagePart>, tiles: &Vec<Tile>) -> Vec<Proximity> {
+    println!("Gathering all the tiling possibilities...");
     let mut map = build_proximities_map(parts, tiles);
     let mut result = vec![];
 
-    println!("Building the best mosaic");
+    println!("Building the best mosaïc...");
+    let initial_length = map.len();
+    let bar = ProgressBar::new(initial_length as u64);
+
     loop {
         if map.len() == 0 {
             break;
@@ -14,6 +19,7 @@ pub fn make_match(parts: Vec<ImagePart>, tiles: Vec<Tile>) -> Vec<Proximity> {
         let proximity = map.first().unwrap().clone();
         remove_references_to_tile_and_part(&mut map, &proximity);
         result.push(proximity);
+        bar.set_position((initial_length - map.len()) as u64);
     }
 
     result.sort_by(|a, b| match a.part.y.cmp(&b.part.y) {
@@ -25,7 +31,7 @@ pub fn make_match(parts: Vec<ImagePart>, tiles: Vec<Tile>) -> Vec<Proximity> {
     result
 }
 
-fn build_proximities_map(parts: Vec<ImagePart>, tiles: Vec<Tile>) -> Vec<Proximity> {
+fn build_proximities_map(parts: Vec<ImagePart>, tiles: &Vec<Tile>) -> Vec<Proximity> {
     let mut out = vec![];
 
     for i in 0..parts.len() {
