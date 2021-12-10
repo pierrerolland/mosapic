@@ -6,7 +6,7 @@ _A command line tool to turn a picture into a mosaic made of other pictures_
 
 # Install
 
-Just download the `mosapic` binary to your `/usr/local/bin` and make it executable.
+Just download the `mosapic` binary from the Releases section to your `/usr/local/bin` and make it executable.
 
 # Usage
 
